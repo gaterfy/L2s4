@@ -12,14 +12,16 @@ int onOffSwitchState=0;
 int previousOnOffSwitchState=0;
 int directionSwitchState=0;
 int previousDirectionSwitchState=0;
-
+ 
 int motorEnabled=0;
 int motorSpeed=150;
 int motorDirection=1;
 
 void setup()
 {
+   
   OneSheeld.begin();
+ 
   pinMode(directionswitchPin, INPUT);
   pinMode(onOffSwitchStateSwitchPin,INPUT);
   pinMode(controlPin1,OUTPUT);
@@ -30,39 +32,41 @@ void setup()
 }
 void loop()
 {
+ 
   onOffSwitchState=GamePad.isUpPressed();
 
   //delay(1);
   directionSwitchState=GamePad.isDownPressed();
+  
   //motorSpeed=analogRead(potPin)/4;
   //if(switchState==HIGH)
   if (onOffSwitchState != previousOnOffSwitchState)
   {
-  	if(GamePad.isRedPressed()){
+    //if(GamePad.isRedPressed()){
     if(onOffSwitchState==HIGH){
       motorEnabled= !motorEnabled;
       
-    }
+    
   }
   }
-  if(directionSwitchState ){//!= previousDirectionSwitchState){
+  if(directionSwitchState ){
     if(directionSwitchState){//==HIGH){
       motorDirection=!motorDirection;
       analogWrite(enablePin, motorSpeed);
       digitalWrite(controlPin2,HIGH);
-      digitalWrite(controlPin2,LOW);
+      digitalWrite(controlPin1,LOW);
     }
   }
   if(motorDirection==1){
     digitalWrite(controlPin1,HIGH);
     digitalWrite(controlPin2,LOW);
+    
 
   }
   else{
     digitalWrite(controlPin1,LOW);
     digitalWrite(controlPin2,HIGH);
-    digitalWrite(controlPin1,LOW);
-    digitalWrite(controlPin2,HIGH);
+    
   }
 
   
@@ -76,4 +80,5 @@ void loop()
   }
   previousDirectionSwitchState=directionSwitchState;
   previousOnOffSwitchState=onOffSwitchState;
+  
   }
