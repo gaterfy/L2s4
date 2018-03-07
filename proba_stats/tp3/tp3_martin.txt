@@ -1,0 +1,214 @@
+VASILEV Martin
+L2S4 Info - Gr.5
+
+Ex1:
+
+unif = function(n,a,b,c,d) {
+     return (cbind(runif(n,min=a,max=b),runif(n,min=c,max=d)))
+}
+
+La fonction rend n points tires aleatoirement sur [a,b]x[c,d]
+Pour un seul point, on prend n = 1
+
+Ex2:
+
+On veut calculer C = E([exp(G) - 1]+) ou G ~ N(0,1)
+
+D'apres la Loi forte des grands nombres, on sait que :
+E(f(G)) = (f(G1) + f(G2) + ... + f(Gn)) / n
+
+Donc il suffit que simuler G n fois (1.), de garder que les valeurs
+positives (2.), de faire la somme de ces valeurs (3.) et diviser par
+n (4.) pour obtenir une valeur approche de C.
+
+On comme par simuler n fois la loi normale N(0,1).
+
+On va poser n = 1000, de maniere completement arbitraire.
+
+0. n = 1000
+
+1. G = rnorm(n,0,1)
+
+2. Ensuite on garde que les valeurs positives
+   
+res = c()
+
+for (i in 1:n) {
+    s = exp(G[i])-1
+    if (s > 0) {
+        res = c(res,s)
+    }
+    else {
+	res = c(res,0)
+    }
+}
+
+3. On fait la somme de ces elements
+res = sum(res)
+
+4. On divise par n
+
+res = res/n
+
+Et on a notre valeur dans la variable res.
+
+Exemple:
+Pour n = 1000, on trouve res = 0.8868944
+
+Ex3:
+
+On veut calculer la distance moyenne entre deux points dans le carre [0,1]x[0,1].
+
+Il suffit de tirer n fois 2 points dans la carre [0,1]x[0,1], calculer
+la distance entre ses points pour ensuite faire la somme des distances
+obtenu et diviser par n.
+
+1. Pour faciliter la tache nous allons cree une fonction qui calcule la distance entre deux points.
+
+Soient a et b deux points :
+
+distance = function(a,b) {
+	 return(sqrt((a[1]-a[2])^2 + (b[1] - b[2])^2))
+}
+
+2. On tire n fois 2 points dans le carre [0,1]x[0,1] avec notre fonction
+de l'exercice 1 et somme les distances obtenue:
+
+res = 0
+for (i in 1:n) {
+    a = unif(1,0,1,0,1)
+    b = unif(1,0,1,0,1)
+    res = res + distance(a,b)
+}
+
+3. On divise par le nombre de points que nous avons tirer, c'est-a-dire n
+
+res = res/n
+
+Et on a notre moyenne sur n tirage
+
+Exemple:
+Pour n=1000, on trouve res = 0.5183083
+
+Ex4:
+
+On veut cree une fonction (qu'on appellera cunif, pour cercle uniform) qui simule n tirage d'un point dans le cercle de centre 0 et rayon 1, et representer cette experience graphiquement.
+
+1. D'abord il faut cree la fonction cunif, pour faire cela nous allons
+utiliser la fonction unif de l'Ex1 encore une fois. Nous allons faire un
+tirage dans le carre [-1,1]x[-1,1] pour englober le cerlce de centre 0
+et rayon 1. Puis on va verifier si le point appartient dans le cercle,
+si il appartient on le rajoute a la liste, sinon non et on continue
+jusqu'avoir n points dans notre liste.
+
+Pour verifier l'apartenance on cree une fonctions in_cercle qui prend un
+point en parametre et qui verifier s'il appartient au disque de centre 0 et rayon 1.
+
+in_cercle = function(a) {
+	  return(sqrt(a[1]^2+a[2]^2) <= 1)
+}
+
+cunif = function(n) {
+      x = c()
+      y = c()
+      nb_points = 0
+      while (nb_points < n) {
+      	    point_t = unif(1,-1,1,-1,1)
+	    if (in_cercle(point_t)) {
+	       x = c(point_t[1],x)
+	       y = c(point_t[2],y)
+	       nb_points = nb_points + 1
+	    }
+       }
+       return(cbind(x,y))
+}
+
+Et donc de cette maniere on obtient une matrice a deux colonnes
+contenant n points tire dans le disque de centre 0 et rayon 1.
+
+2. Pour ensuite representer cela graphiquement :
+
+On recupere des n tirages :
+
+res = cunif(n)
+
+Ensuite on fait un plot sur les points pour les representer :
+
+plot(res[,1],res[,2],xlim=c(-1,1),ylim=c(-1,1))
+
+Et on affiche le cercle qu'on superpose sur les points:
+
+theta = seq(0,2*pi, length=200)
+lines(x=cos(theta),y=sin(theta))
+
+Exemple:
+Si on prend n=10000, on voit que les points dessine un cercle!
+
+Ex5:
+
+On veut simuler une variable aleatoire X de densite f verifiant
+f(x) = 0 si x n'appartient pas a un intervalle [a,b] et est majore
+par une constante M.
+
+Ici f(x) = 0 si x < 0 ou x > 1 et f(x) = 6x(1-x) sinon.
+
+Notre intervalle est donc [0,1].
+
+Sur [0,1], f(x) = 6x - 6x^2, donc f'(x) = 6 - 12x, f'(x) = 0 est
+le maximum de la parabole car le coefficient directeur est negatif.
+f'(x) = 0 <=> 6 - 12x = 0 <=> 6 = 12x <=> x = 1/2
+
+Donc f(1/2) est le maximum, donc 3 - 3/2 = 3/2 = 1.5 est le maximum
+
+Donc on peut prend M = 1.5
+
+Maintenant qu'on a l'intervalle et M il suffit d'appliquer l'algorithme proposer.
+
+On cree tout d'abord la fonction de densite f:
+
+f = function(x) {
+  if (x<0 || x>1) {
+     return(0)
+  else {
+     return(6*x - 6*x^2)
+  }
+}
+
+Ensuite on definie la fonction (qu'on va appeler f_unif) qui va simuler
+une variable X ayant f pour densite (en utilisant l'algorithme propser
+dans l'enonce). Pour faire cela on utilise encore une fois la fonction
+unif de l'exercice 1.
+
+f_unif = function(n, a, b, M) {
+       x = c()
+       y = c()
+       nb_points = 0
+       while (nb_points < n) {
+       	     point_t = unif(1,a,b,0,M)
+	     if (point_t[2] < f(point_t[1])) {
+	     	x = c(point_t[1],x)
+		y = c(point_t[2],y)
+		nb_points = nb_points + 1
+	     }
+       }
+       return (cbind(x,y))
+}
+	    
+Donc pour simuler n fois la v.a. X ayant pour densite f, on peut faire:
+
+res = f_unif(n,0,1,1.5)
+
+Pour bien voir l'effet de la fonction nous allons la representer
+graphiquement de la maniere suivant
+
+On mets les points:
+plot(res[,1],res[,2],xlim=c(-0.1,1.1),ylim=c(0,1.6))
+
+On dessine la courbe sur [0,1] pour voir bien l'appartenance
+curve(6*x*(1-x), -1, 1, add=TRUE)
+
+Exemple:
+Si on prend n=1000, les points commence a dessine la forme de l'aire
+sous la courbe 6x(1-x)
+
+

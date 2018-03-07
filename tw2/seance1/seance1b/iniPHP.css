@@ -1,0 +1,46 @@
+header h1, header h2 {
+  text-align: center;
+}
+
+section {
+  background-color: beige;
+  border:2px dashed gray;
+  margin:10px 10px;
+  padding:5px;
+  font-size:16px;
+}
+
+section h2 {
+  background-color:darkred;
+  color:white;
+  font-size:22px;
+  padding:2px;
+  margin:0;
+  margin-bottom:10px;
+  border-radius:5px;
+  width:20%;
+  padding:2px;
+  text-align:right;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table td {
+  text-align:center;
+  border:2px solid black;
+  padding:2px;
+  width:20px;
+  height:20px;
+  background-color:gray;
+}
+
+table .blanc {
+  background-color:white;
+}
+
+table .noir {
+  background-color:black;
+  color:white;
+}

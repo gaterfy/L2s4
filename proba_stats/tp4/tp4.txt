@@ -1,0 +1,156 @@
+======================================
+NOM : LOMBART Thomas
+GROUPE : 5
+
+Probabilités-Statistiques TP 4
+======================================
+
+
+------
+EXO. 1
+------
+
+
+SIMULATION :
+------------
+
+Soit n le nombre de personnes, e le nombre d'expériences (on fixe e = 10000) et p le nombre de cas favorables (= succès)
+Nous allons simuler n tirages entre 1 et 365.
+Grâce à la fonction unique(), nous regardons si les n tirages sont bien différents
+Si ils sont tous différents, on incrémente p.
+On retourne enfin 1 - p/e puisque p/e représente la probabilité que toute le monde ait une date d'anniversaire différente.
+
+simulation_anniversaire=function(n, e = 10000) {
+  p = 0
+  for (i in 1:e) {
+    s = sample(c(1:365), n, replace=TRUE)
+    p = p + (length(unique(s)) == n)
+  }
+  return(1-(p/e))
+}
+
+CALCUL EXACT :
+--------------
+
+Soit p_k la probabilité que k personnes aient toutes un jour d'anniversaire DIFFERENT.
+
+Au total, on a 365^k cas possibles (365 * 365 * ... k fois)
+
+On a :
+
+p_1 = (365/365) = 1
+p_2 = (365/365)*(364/365)
+p_3 = (365/365)(364/365)*(363/365)  (En effet, le jour d'anniversaire de la troisième personne doit être différente des deux personnes précédentes)
+....
+p_k = (365/365)*(364/365)*(363/365)* ... * (365-k+1/365) = (365!)/(365^k*(365-k)!)
+
+Donc la probabilité que 2 personnes parmi k personnes aient un jour d'anniversaire identique est 1 - p_k
+
+On peut programmer la fonction suivante :
+
+exact_anniversaire = function(n) {
+  return(1-(choose(365,n)*factorial(n)/(365^n)))
+}
+
+Nous allons tester pour des valeurs allant de 1 à 120 :
+
+x = c(1:120)
+for (i in 1:120) {
+  x[i] = exact_anniversaire(i)
+}
+plot(x, type='l', main='Le paradoxe des anniversaires', xlab='Nombre de personnes', ylab='Probabilité même anniversaire')
+
+
+Graphiquement, nous pouvons constater qu'il faut une vingtaine de personnes pour que deux personnes aient la même date d'anniversaire en étant sûr à 50%
+(Plus exactement, il faut 23 personnes)
+
+
+------
+EXO. 2
+------
+
+Soit n=100 la taille de l'échantillon et lambda = 100 le paramètre de la loi de Poisson
+
+Codons une première fonction calculant la variance de la loi de Poisson pour une certaine taille d'échantillon et un paramètre lambda
+
+variance_poisson = function(n=100, lambda=100) {
+  x = rpois(n, lambda);
+  moyenne = mean(x)
+  variance = mean((x-m)^2)
+  return(variance)
+}
+
+En statistiques, on appelle biais d'un estimateur la différence entre la valeur de son espérance et la valeur de la variable aléatoire qu'il est censé estimer.
+
+Rappelons que l'espérance et la variance de la loi de poisson sont tout deux égale à lambda. Dans notre exemple, c'est donc égal à 100.
+
+Codons la fonction calculant le biais de l'estimateur de la variance :
+
+
+Soit m=10000 le nombre d'itérations
+
+biais_poisson = function(m=10000, n=100, lambda=100) {
+  variances = variance_poisson(n, lambda)
+  for(i in 1:10000) {
+    variances = c(variances, variance_poisson(n, lambda))
+  }
+  moyenne_variance = mean(variances)
+  return(moyenne_variance-lambda)
+}
+
+Le biais est égal à un peu plus de 18 pour l'estimateur de la variance.
+
+
+------
+EXO. 3
+------
+
+
+Pour vérifier cela, nous allons simuler 2 fois la loi normale (m = 10000).
+Nous allons tracer l'histogramme de la somme de ces deux variables aléatoires.
+Et pour vérifier que ce sont bien les deux mêmes choses, nous allons tracer la courbe
+de la densité de probabilité de la variable aléatoire suivant la loi normale
+N(m1 + m2, v1^2+v2^2)
+
+somme_loi_normale= function(nb=10000, m1=2, v1=1, m2=5, v2=3) {
+  x = rnorm(nb, m1, v1)
+  y = rnorm(nb, m2, v2)
+  hist(x+y, prob=TRUE, main='Somme de deux variables aléatoires (loi normale)', col='red')
+  m = m1+m2
+  v = v1^2+v2^2
+  curve(exp(-(x-m)^2/(2*v))/sqrt(2*pi*v), col='blue', add=TRUE)
+}
+
+
+------
+EXO. 4
+------
+
+
+La fonction ci-dessous permet de créer une telle variable aléatoire.
+
+suite_evenements = function(m = 1000, t = 50, lambda = 0.2) {
+  x = 0
+  for (i in 1:m) {
+    nb_evenements = 1
+    temps = 0
+    while (temps < t) {
+      temps = temps + rexp(1, lambda)
+      nb_evenements = nb_evenements + 1
+    }
+    x = c(x, nb_evenements)
+  }
+  return(x)
+}
+
+
+En moyenne, l'espérance de la variabla aléatoire X est 12.
+Pour vérifier que c'est bien une loi de poisson, nous allons donc tracer l'histogramme d'une loi de poisson avec m itérations et lambda = 12.
+En effet, l'espérance d'une loi de poisson est lambda.
+
+suite_evenements_poisson = function(m = 1000, t = 50, lambda = 0.2) {
+  x = suite_evenements()
+  lambda_poisson = mean(x)
+  hist(x, prob=TRUE, col='blue', main="Suite d'événements suivant une loi de Poisson")
+  hist(rpois(m, lambda_poisson), prob=TRUE, col='red', add=TRUE)
+}

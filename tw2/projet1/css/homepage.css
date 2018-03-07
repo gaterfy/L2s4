@@ -1,0 +1,325 @@
+/*
+homepage.css
+
+Projet : V'LiVe
+Noms : LOMBART Thomas- VASILEV Martin
+Date : 20 Mars 2017
+*/
+
+
+/*
+General CSS rules
+ */
+
+html, body {
+    padding: 0px;
+    margin: 0px;
+    height: 100%;
+}
+
+* {
+    font-family: Lato;
+}
+
+
+/*
+Blur filter
+*/
+
+.blur {
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+    -o-filter: blur(5px);
+    -ms-filter: blur(5px);
+}
+
+
+/*
+Selected station class style
+*/
+
+.selected {
+  background-color: #8bb3f4;
+}
+
+/*
+Container style
+*/
+
+#container {
+    box-shadow: 0px 0px 4px black;
+    height: 70%;
+    width: 30%;
+    position: absolute;
+    top: 15%;
+    right: 10px;
+    z-index: 1;
+    border-radius: 15px;
+    background-color: #67C8FF;
+}
+
+
+/*
+Map style
+ */
+
+#carteCampus {
+    width: 100%;
+    height: 80%;
+    z-index: 0;
+    transition: all 0.5s;
+}
+
+/*
+Float menu style
+*/
+#float {
+  width:10%;
+  height:auto;
+  position:absolute;
+  top:20%;
+  left:5%;
+  border-radius:10%;
+  font-size:1em;
+  word-wrap:break-word;
+  padding:0.25% 0.5%;
+  background-color: #8bb3f4;
+  box-shadow: 0px 0px 4px black;
+  z-index:1;
+}
+
+#float .btn {
+}
+
+/*
+Div style (these who appear in the container)
+ */
+
+#stations-div {
+    overflow-y: scroll;
+    height: 85%;
+}
+
+#form-div {
+    display: none;
+    height: 85%;
+}
+
+#focus {
+    display: none;
+    height: 85%;
+    overflow-y: scroll;
+}
+
+
+/*
+Title CSS rules
+ */
+
+#title {
+    padding: 15px;
+    text-align: center;
+    font-size: 2.5em;
+    background-color: #4985D6;
+    border-bottom: 1px solid black;
+}
+
+
+/*
+Container menu style
+ */
+
+#container-menu {
+    display: flex;
+    justify-content: space-around;
+    height: 15%;
+    border-bottom: 1px solid black;
+}
+
+#stations, #search {
+    padding: 10px;
+    font-size: 1.2em;
+    color: white;
+    cursor: pointer;
+    transition: all 1s;
+    width: 50%;
+    text-align: center;
+    cursor: pointer;
+}
+
+#search {
+    border-top-right-radius: 15px;
+    border: 1px solid #62D0FF;
+    background-color: #62D0FF;
+}
+
+#stations {
+    border-top-left-radius: 15px;
+    border: 1px solid #4985D6;
+    background-color: #4985D6;
+}
+
+
+/*
+Popup CSS rules
+ */
+
+.btn-popup {
+    width: 100%;
+}
+
+
+/*
+Filter Form CSS Rules
+ */
+
+.filter {
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+}
+
+.filter input, .filter button, .filter select {
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1.3em;
+    margin: 10px 0px;
+}
+
+
+/*
+Button style
+ */
+
+.btn {
+    border: 1px solid #4985D6;
+    border-radius: 5px;
+    background-color: #4985D6;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+    transition: all 1s;
+}
+
+.btn:hover {
+    border-color: #75B4FF;
+    background-color: #75B4FF;
+}
+
+
+/*
+Focus station
+ */
+
+#focus {
+    padding: 10px;
+}
+
+#focus>* {
+    margin-top: 5px;
+}
+
+#focus .btn-info {
+    border-top: 1px solid black;
+}
+
+#focus .btn-info>* {
+    margin-top: 10px;
+}
+
+#focus h2 {
+    text-align: center;
+}
+
+#focus p {
+    font-size: 15px;
+}
+
+
+/*
+Stations list
+ */
+
+a {
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
+    border-bottom: 0.6px solid black;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    padding: 8px;
+    background-color: #67C8FF;
+    cursor: pointer;
+}
+
+ul li {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+
+/*
+If no stations was found
+ */
+
+.not-found {
+    height: 100%;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.not-found p {
+    font-size: 20px;
+}
+
+
+/*
+ Station style
+ */
+
+.btn-carte, .btn-detail, .btn-list {
+    width: 45%;
+    font-size: 1.1em;
+}
+
+.nb-info {
+    display: flex;
+    justify-content: space-around;
+}
+
+.btn-info {
+    display: flex;
+    justify-content: space-around;
+}
+
+
+/*
+FOOTER
+ */
+
+footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+footer a {
+    text-decoration: underline;
+    color: black;
+}
+
+.fa-github {
+    margin-bottom: 10px;
+    transition: all 0.5s;
+}
+
+.fa-github:hover {
+    transform: scale(1.1);
+}

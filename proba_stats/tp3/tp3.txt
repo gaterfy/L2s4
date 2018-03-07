@@ -1,0 +1,169 @@
+======================================
+NOM : LOMBART Thomas
+GROUPE : 5
+
+Probabilités-Statistiques TP 3
+======================================
+
+
+Simuler une loi uniforme sur un rectangle
+-----------------------------------------
+
+------
+EXO 1.
+------
+
+cbind combine les points par colonnes ou lignes (adapté aux matrices)
+
+unif <- function(n, a, b, c, d) {
+  x <- runif(n, min = a, max = b)
+  y <- runif(n, min = c, max = d)
+  return(cbind(x, y))
+}
+
+Pour effectuer la réalisation d'un point aléatoire uniforme, on prend n = 1
+
+
+Méthode de Monte-Carlo
+----------------------
+
+------
+EXO 2.
+------
+
+On commence par simuler n réalisations de la loi N(0, 1) (ici, on prend n = 100)
+
+g <- rnorm(100, 0, 1)
+
+Soit la fonction f(x) = [exp(G) - 1]+ où G ~ N(0, 1).
+
+
+On applique la fonction f et on ne garde que les valeurs positives :
+
+for (i in 1:100) {
+  if (exp(g[i])-1 >= 0) {
+    g[i] <- exp(g[i]) - 1
+  } else {
+    g[i] = 0
+  }
+}
+
+D'après la loi forte des grands nombres, on a :
+
+E(f(x)) = (f(x1) + f(x2) + ... + f(xn))/n
+
+Il faut donc calculer la somme de tous les nombres obtenus ci-dessus divisée par n pour obtenir une valeur approchée du Call, pour cela on utilise la fonction mean :
+
+c = mean(g)
+
+------
+EXO 3.
+------
+
+La distance entre deux points est :
+
+distance <- function(x, y) {
+  x1 <- x[1]
+  x2 <- x[2]
+  y1 <- y[1]
+  y2 <- y[2]
+  return(sqrt((x1-x2)^2 + (y1-y2)^2))
+}
+
+Pour calculer la distance moyenne, nous prenons donc n points et calculons la distance entre chacun de ses points et on divise le tout par n
+
+distance_moyenne <- function(n, a, b, c, d) {
+  s <- 0
+  for (i in 1:n) {
+    x <- unif(1, a, b, c, d)
+    y <- unif(1, a, b, c, d)
+    s = s + distance(x, y)
+  }
+  return(s/n)
+}
+
+Par exemple :
+distance_moyenne(100, 0, 1, 0, 1) renvoie 0.5117068
+
+Algorithme du rejet
+-------------------
+
+------
+EXO 4.
+------
+
+La distance moyenne entre 0 et deux coordonnées est :
+
+sqrt((0-x)^2 + (0-y)^2) = sqrt(x^2+y^2)
+
+On crée une fonction pour cela :
+
+dist_rejet <- function(x, y) {
+  return(sqrt(x^2+y^2))
+}
+
+Le cercle est de centre 0 et de rayon 1, les nombres aléatoires uniformes ont donc une valeur comprise entre -1 et 1 :
+
+rejet_disque <- function(n) {
+  p <- unif(n, -1, 1, -1, 1)
+  for (i in 1:n) {
+    dist <- dist_rejet(p[i,1], p[i,2])
+    while (dist > 1) {
+      p[i,] <- unif(1, -1, 1, -1, 1)
+      dist <- dist_rejet(p[i,1], p[i,2])
+    }
+  }
+  return(p)
+}
+
+On choisit n = 100
+
+D'après le théorème 1, le dernier point (x, y) ainsi obtenu est une réalisation de la loi uniforme sur B (B inclus [a,b] * [c,d])
+
+p <- rejet_disque(100)
+
+p comporte donc une matrice de 100 points générés aléatoirements
+
+On représente graphiqument les points et le cercle (on met TRUE à add pour le superposer aux points) :
+
+plot(p[,1], p[,2], col="red", xlim=c(-1,1), ylim=c(-1,1), main="Lancer de n points uniformes dans le disque D(0,1)")
+
+Pour tracer le cercle, on utilise la fonction symbols (on met FALSE à inches pour bien dimensionner le graphique)
+
+symbols(0, 0, circles=1, inches=FALSE, add=TRUE)
+
+
+------
+EXO 5.
+------
+
+On crée la fonction de densité f :
+
+f1 <- function (x) {
+  if (x < 0 || x > 1) {
+    return(0)
+  } else {
+    return(6*x*(1-x))
+  }
+}
+
+densite <- function(n, a, b, M) {
+  p <- unif(n, a, b, 0, M)
+  for (i in 1:n) {
+    res <- f1(p[i,1])
+    while (p[i,2] > res) {
+      p[i,]<- unif(1, a, b, 0, M)
+      res <- f1(p[i,1])
+    }
+  }
+  return(p)
+}
+
+D'après le théorème 2, l'abscisse x du dernier point simulé est une réalisation de la variable aléatoire :
+
+On prend a = 0, b = 1 et M = 2
+
+p <- densite(100, 0, 1, 2)
+
+plot(p[,1], p[,2], col="red", main="Simulation de la v.a X de densité f(x)=6x(x-1) si 0 <= x <= 1")
+curve(6*x*(1-x), -1, 1, col="blue", add=TRUE)

@@ -1,0 +1,119 @@
+/*
+detail.css
+
+Projet : V'LiVe
+Noms : LOMBART Thomas- VASILEV Martin
+Date : 20 Mars 2017
+*/
+
+
+/*
+General rules
+*/
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+* {
+    font-family: Lato;
+    text-align: center;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    background-color: white;
+}
+
+/*
+Error page scenario
+*/
+.error {
+  width:90%;
+  margin:auto;
+  padding:2%;
+  text-align:center;
+  background-color:lightred;
+  border-radius:3%;
+}
+
+/*
+Span classes
+*/
+
+.underline {
+    text-decoration: underline;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+
+/*
+The map
+*/
+
+#carteStation {
+    width: 50%;
+    height: 100%;
+}
+
+
+/*
+The description card
+*/
+
+#id {
+    width: 45%;
+    height: auto;
+    background-color: lightblue;
+    box-shadow: 0px 0px 16px black;
+    padding: 1%;
+    font-size: 1.1em;
+    margin: auto;
+    border-radius:3%;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 5%;
+}
+
+
+/*
+Table
+*/
+
+table {
+    table-layout: fixed;
+    width: 100%;
+    margin: 5% 0;
+    border: 2px solid black;
+}
+
+table th {
+    border: 1px solid gray;
+}
+
+table td {
+    border: 1px solid gray;
+    padding: 1%;
+    background-color: lightgray;
+    word-wrap: break-word;
+    text-align: center;
+}
+
+@media print {
+    #carteStation {
+        display: none;
+    }
+    #id {
+        width: 90%;
+        height: auto;
+    }
+}

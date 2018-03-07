@@ -1,0 +1,38 @@
+header h1, header h2 {
+  text-align: center;
+}
+
+.nom {
+  color: brown;
+}
+
+section {
+  border: 4px dashed grey;
+  background-color: beige;
+  margin-bottom: 30px;
+  padding: 3px;
+  font-size: 18px;
+}
+
+section h2 {
+  border-radius: 5px;
+  background-color: brown;
+  color: white;
+  text-align: right;
+  width: 33%;
+  margin: 0;
+  padding: 3px;
+  margin-bottom: 10px;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table td {
+  border: 1px solid black;
+  padding: 3px;
+  background-color: beige;
+  text-align: center;
+  vertical-align: middle;
+}

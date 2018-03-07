@@ -1,0 +1,26 @@
+<form action='dessiner.php' method='get'>
+  <fieldset id='size'>
+    <legend> Size </legend>
+    <label for="cx">X Start :</label>
+    <input name="cx" id="cx" type="text" pattern="[0-9]+" />
+    <br />
+    <label for="cy">Y Start :</label>
+    <input name="cy" id="cy" type="text" pattern="[0-9]+" />
+    <br />
+    <label for="r">Radius :</label>
+    <input name="r" id="r" type="text" pattern="[0-9]+" />
+    <br />
+    <label for="a">Angle :</label>
+    <input name="a" id="a" type="text" pattern="[0-9]+" />
+    <br />
+  </fieldset>
+  <fieldset id="fig">
+    <legend> Figure </legend>
+    <select name="fig[]" multiple="multiple">
+      <option value='triangle'>Triangle</option>
+      <option value='square'>Square</option>
+      <option value='circle'>Circle</option>
+    </select>
+  </fieldset>
+  <button type="submit">Validate</button>
+</form>
