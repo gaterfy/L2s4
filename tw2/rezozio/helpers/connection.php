@@ -9,7 +9,7 @@
  */
 
 try {
-    $connection = new PDO("pgsql:host=webtp.fil.univ-lille1.fr;dbname=lombart", "lombart", "helloworld");
+    $connection = new PDO("pgsql:host=webtp.fil.univ-lille1.fr;dbname=lombart", "", "");
 } catch (PDOException $e) {
     echo "Connection error : ", $e->getMessage();
     exit();
